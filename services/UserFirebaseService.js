@@ -1,10 +1,10 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
-import { auth } from './firebaseConfig';
+import { auth } from '@/firebaseConfig';
 
 const db = getFirestore();
 
-export const resetPassword = async () => {
+export const resetPassword = async (email) => {
   await sendPasswordResetEmail(auth, email);
 }
 
@@ -22,35 +22,35 @@ export const fetchData = async () => {
 export const deleteUser = async (documentId) => {
   try {
     await deleteDoc(doc(db, "Usuario", documentId));
-    Alert.alert('Sucesso', 'Usuario Deletado do cadastrado');
   } catch (e) {
     console.error("Error deleting document: ", e);
   }
 };
 
 
-export const createUser = async () => {
+export const signUp = async ({email, senha}) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, usuario, senha);
-    console.log(userCredential.user.email);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
     await sendEmailVerification(userCredential.user);
     console.log('Usuário registrado com sucesso!', userCredential.user);
+    return userCredential.user;
   }
   catch (error) {
-    console.error('Erro ao registrar:', error.message);
-    Alert.alert('Erro', error.message);
+    console.error('Erro ao registrar usuário: ', error.message);
+    throw new Error(error);
   }
 }
 
-
-const login = async () => {
+export const login = async ({email, senha}) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, usuario, senha);
+    const userCredential = await signInWithEmailAndPassword(auth, email, senha);
     console.log('Login bem-sucedido!', userCredential.user);
-    Alert.alert('Sucesso', 'Login bem-sucedido!');
+    return userCredential.user;
   }
   catch (error) {
-    //console.error('Erro ao fazer login:', error.message);
-    Alert.alert('Erro', 'Usuário e Senha invalidos');
+    if (error.code === 'auth/invalid-credential') {
+      throw new Error('Credenciais inválidas. Por favor, verifique seu email e senha.');
+    }
+    console.error('Erro ao realizar login: ', error.message);
   }
 };
