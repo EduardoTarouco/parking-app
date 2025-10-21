@@ -1,32 +1,8 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut } from "firebase/auth";
 import { getFirestore, collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
 import { auth } from '@/firebaseConfig';
 
 const db = getFirestore();
-
-export const resetPassword = async (email) => {
-  await sendPasswordResetEmail(auth, email);
-}
-
-export const fetchData = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "Usuario"));
-    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log("Fetched data:", data);
-  } catch (e) {
-    console.error("Error fetching documents: ", e);
-  }
-};
-
-
-export const deleteUser = async (documentId) => {
-  try {
-    await deleteDoc(doc(db, "Usuario", documentId));
-  } catch (e) {
-    console.error("Error deleting document: ", e);
-  }
-};
-
 
 export const signUp = async ({email, senha}) => {
   try {
@@ -37,6 +13,12 @@ export const signUp = async ({email, senha}) => {
   }
   catch (error) {
     console.error('Erro ao registrar usuário: ', error.message);
+    if (error.code === 'auth/email-already-in-use') {
+      throw new Error('Este email já está em uso!');
+    }
+    if (error.code === 'auth/invalid-email') {
+      throw new Error('Este email é inválido!');
+    }
     throw new Error(error);
   }
 }
@@ -52,5 +34,39 @@ export const login = async ({email, senha}) => {
       throw new Error('Credenciais inválidas. Por favor, verifique seu email e senha.');
     }
     console.error('Erro ao realizar login: ', error.message);
+  }
+};
+
+export const resetPassword = async ({email}) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    if (error.code === 'auth/invalid-email') {
+      throw new Error('Este email é inválido!');
+    }
+    console.error('Erro ao enviar email de recuperação de senha: ', error.message);
+    throw new Error(error);
+  }
+}
+
+export const signOutUser = async () => {
+  await signOut(auth);
+}
+
+export const fetchData = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "Usuario"));
+    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log("Fetched data:", data);
+  } catch (e) {
+    console.error("Error fetching documents: ", e);
+  }
+};
+
+export const deleteUser = async (documentId) => {
+  try {
+    await deleteDoc(doc(db, "Usuario", documentId));
+  } catch (e) {
+    console.error("Error deleting document: ", e);
   }
 };
