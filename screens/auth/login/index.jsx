@@ -11,7 +11,7 @@ import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
 import { useState } from "react";
 
-export const Login = () => {
+export const Login = ({ navigation }) => {
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -108,7 +108,7 @@ export const Login = () => {
                 className="self-end -mt-5" 
                 variant={"link"}
                 size={"sm"}
-                onPress={() => {console.log("Fluxo de recuperação de senha...")}}
+                onPress={() => {console.log(navigation.push("reset-password"))}}
               >
                 <ButtonText className="text-blue-500 underline">Esqueci a senha</ButtonText>
               </Button>
