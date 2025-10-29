@@ -3,28 +3,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, ButtonText } from "@/components/ui/button";
 import { addParkingCost } from "@/services/ParkingService";
 import { FormControl } from "@/components/ui/form-control";
+import { MaskedTextInput } from "react-native-mask-text";
 import { Input, InputIcon } from "@/components/ui/input";
 import { Controller, useForm } from 'react-hook-form';
 import { Heading } from '@/components/ui/heading';
 import { DollarSign } from 'lucide-react-native';
 import { Header } from "@/components/app/header";
 import { VStack } from '@/components/ui/vstack';
+import { getAuth } from "firebase/auth";
 import { useState } from "react";
 
-export const RegisterParkingCosts = () => {
+export const RegisterParkingCosts = ({ navigation }) => {
+
+  const userId = getAuth().currentUser.uid;
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
+      id: userId,
       parkingCost: ""
     }
   });
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = async ({data}) => {
+  const onSubmit = async (data) => {
     try {
-      console.log("Submitted Info: ", data);
       await addParkingCost(data);
+      navigation.goBack();
     } catch (error) {
       console.log(error);
       setErrorMessage(error.message);
@@ -49,7 +54,7 @@ export const RegisterParkingCosts = () => {
             <VStack space="xl">
 
               <VStack space="xs">
-                <Text className={`text-typography-500 ${errors.parkingCost ? "text-red-500" : ""}`}>Custo de estacionamento*</Text>
+                <Text className={`text-typography-500 ${errors.parkingCost ? "text-red-500" : ""}`}>Custo de estacionamento por minuto*</Text>
                 <Controller
                   control={control}
                   name="parkingCost"
@@ -58,9 +63,9 @@ export const RegisterParkingCosts = () => {
                     <InputIcon as={DollarSign} className="m-3 -mr-1" color={errors.parkingCost ? "red" : "currentColor"} />
                     <MaskedTextInput
                       style={{flex: 1, paddingHorizontal: 14}}
-                      mask="R$99,99"
+                      mask="R$9,99"
                       type="text"
-                      placeholder="R$00,00"
+                      placeholder="R$0,00"
                       keyboardType="numeric"
                       value={value}
                       onChangeText={onChange}
