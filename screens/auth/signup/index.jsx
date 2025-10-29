@@ -1,4 +1,4 @@
-import { AtSignIcon, EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/components/ui/icon";
+import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/components/ui/icon";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
