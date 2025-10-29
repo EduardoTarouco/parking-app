@@ -1,29 +1,33 @@
-import firestore from '@react-native-firebase/firestore';
+import { doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
-const parkingCostCollection = firestore().collection('ParkingCosts');
-
+const parkingCostCollection = collection(db, "ParkingCosts");
 export const getParkingCost = async (id) => {
   try {
-    const document = await parkingCostCollection.doc(id).get();
-    if (document.exists) {
-      return { id: document.id, ...document.data() };
+    const documentRef = doc(parkingCostCollection, id);
+    const documentSnap = await getDoc(documentRef);
+
+    if (documentSnap.exists()) {
+      return { id: documentSnap.id, ...documentSnap.data() };
     } else {
-      throw new Error('Document not found');
+      throw new Error("Documento não encontrado");
     }
   } catch (error) {
-    console.error('Erro ao receber o custo do estacionamento:', error);
+    console.error("Erro ao receber o custo do estacionamento:", error);
     throw error;
   }
-}
+};
 
 export const addParkingCost = async (data) => {
   try {
     if (!data.id) {
-      console.error('ERRO: ID é obrigatório para adicionar custo de estacionamento');
+      throw new Error("ID é obrigatório para adicionar custo de estacionamento");
     }
-    parkingCostCollection.doc(data.id).set(data);
+
+    const documentRef = doc(parkingCostCollection, data.id);
+    await setDoc(documentRef, data);
   } catch (error) {
-    console.error('Erro ao adicionar custo de estacionamento:', error);
+    console.error("Erro ao adicionar custo de estacionamento:", error);
     throw error;
   }
-}
+};
