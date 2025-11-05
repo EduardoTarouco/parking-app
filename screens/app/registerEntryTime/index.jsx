@@ -14,7 +14,7 @@ import { VStack } from '@/components/ui/vstack';
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
 
-export const RegisterParkingCosts = ({ navigation }) => {
+export const RegisterEntryTime = ({ navigation }) => {
 
   const userId = getAuth().currentUser.uid;
 
@@ -55,7 +55,7 @@ export const RegisterParkingCosts = ({ navigation }) => {
             <VStack space="xl">
 
               <VStack space="xs">
-                <Text className={`text-typography-500 ${errors.parkingCost ? "text-red-500" : ""}`}>Custo de estacionamento por hora*</Text>
+                <Text className={`text-typography-500 ${errors.parkingCost ? "text-red-500" : ""}`}>Custo de estacionamento por minuto*</Text>
                 <Controller
                   control={control}
                   name="parkingCost"

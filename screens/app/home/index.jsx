@@ -14,13 +14,19 @@ export const Home = ({ navigation }) => {
       <View className="flex-1 p-4">
         <VStack space="sm">
           <Button variant="solid" size="md" action="primary"
-            onPress={() => {navigation.navigate('parking-costs')}}
+            onPress={() => { navigation.navigate('parking-costs') }}
           >
             <ButtonText>Registrar custo de estacionamento</ButtonText>
           </Button>
-          
+
+          <Button variant="solid" size="md" action="primary"
+            onPress={() => { navigation.navigate('entry-time') }}
+          >
+            <ButtonText>Registrar entrada de carro</ButtonText>
+          </Button>
+
           <Button variant="solid" size="md" action="negative"
-            onPress={() => {signOutUser()}}
+            onPress={() => { signOutUser() }}
           >
             <ButtonText>Sair</ButtonText>
           </Button>

@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
-const parkingCostCollection = collection(db, "ParkingCosts");
+const carEntryCollection = collection(db, "CarEntryDate");
 
 export const getParkingCost = async (id) => {
   try {
