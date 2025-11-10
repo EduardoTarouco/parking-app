@@ -26,7 +26,7 @@ export const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = async ({confirmarSenha, ...data}) => {
+  const onSubmit = async ({ confirmarSenha, ...data }) => {
     console.log("Submitted Info: ", data);
     try {
       await signUp(data);
@@ -65,23 +65,23 @@ export const SignUp = () => {
                     }
                   }}
                   render={({ field: { onChange, value } }) => (
-                  <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
-                    <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
-                    <InputField
-                      placeholder="fulano@gmail.com"
-                      keyboardType="email-adress" 
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                  </Input>
-                )}
+                    <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
+                      <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
+                      <InputField
+                        placeholder="Fulano@gmail.com"
+                        keyboardType="email-adress"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    </Input>
+                  )}
                 />
                 {errors.email && <Text className="text-red-500 text-sm ml-5">{errors.email.message}</Text>}
               </VStack>
 
               <VStack space="xs">
                 <Text className={`text-typography-500 ${errors.senha ? "text-red-500" : ""}`}>Senha*</Text>
-                <Controller 
+                <Controller
                   control={control}
                   name="senha"
                   rules={{
@@ -92,19 +92,19 @@ export const SignUp = () => {
                     }
                   }}
                   render={({ field: { onChange, value } }) => (
-                  <Input variant="rounded" size="xl" className={`text-center ${errors.senha ? "border-2" : ""}`} isInvalid={errors.senha}>
-                    <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.senha ? "red" : "currentColor"} />
-                    <InputField 
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Senha"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                    <InputSlot className="pr-3" onPress={() => {setShowPassword(!showPassword)}}>
-                      <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
-                    </InputSlot>
-                  </Input>
-                )}
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.senha ? "border-2" : ""}`} isInvalid={errors.senha}>
+                      <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.senha ? "red" : "currentColor"} />
+                      <InputField
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Senha"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                      <InputSlot className="pr-3" onPress={() => { setShowPassword(!showPassword) }}>
+                        <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
+                      </InputSlot>
+                    </Input>
+                  )}
                 />
                 {errors.senha && <Text className="text-red-500 text-sm ml-5">{errors.senha.message}</Text>}
               </VStack>
@@ -116,39 +116,39 @@ export const SignUp = () => {
                   name="confirmarSenha"
                   rules={{
                     required: "A confirmação da senha é obrigatória",
-                    validate: (value) => 
+                    validate: (value) =>
                       value === getValues("senha") || "As senhas não coincidem"
                   }}
-                  render={({ field: { onChange, value }}) => (
-                  <Input variant="rounded" size="xl" className={`text-center ${errors.confirmarSenha ? "border-2" : ""}`} isInvalid={errors.confirmarSenha}>
-                    <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.confirmarSenha ? "red" : "currentColor"} />
-                    <InputField 
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Repetir senha"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                    <InputSlot className="pr-3" onPress={() => {setShowConfirmPassword(!showConfirmPassword)}}>
-                      <InputIcon as={showConfirmPassword ? EyeIcon : EyeOffIcon} />
-                    </InputSlot>
-                  </Input>
-                )}
+                  render={({ field: { onChange, value } }) => (
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.confirmarSenha ? "border-2" : ""}`} isInvalid={errors.confirmarSenha}>
+                      <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.confirmarSenha ? "red" : "currentColor"} />
+                      <InputField
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Repetir senha"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                      <InputSlot className="pr-3" onPress={() => { setShowConfirmPassword(!showConfirmPassword) }}>
+                        <InputIcon as={showConfirmPassword ? EyeIcon : EyeOffIcon} />
+                      </InputSlot>
+                    </Input>
+                  )}
                 />
                 {errors.confirmarSenha && <Text className="text-red-500 text-sm ml-5">{errors.confirmarSenha.message}</Text>}
               </VStack>
 
               {errorMessage && <Text className="text-red-500 text-md">{errorMessage}</Text>}
 
-              <Button 
-                action={"primary"} 
-                variant={"solid"} 
-                size={"lg"} 
+              <Button
+                action={"primary"}
+                variant={"solid"}
+                size={"lg"}
                 onPress={handleSubmit(onSubmit)}
               >
                 <ButtonText>Enviar</ButtonText>
               </Button>
             </VStack>
-          </FormControl>    
+          </FormControl>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

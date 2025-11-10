@@ -1,13 +1,13 @@
-import { addParkingCost, getParkingCost } from "@/services/ParkingService";
 import { KeyboardAvoidingView, Platform, View, Text } from "react-native";
+import { Input, InputField, InputIcon } from "@/components/ui/input";
+import { Clock, Calendar, CarFront } from 'lucide-react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, ButtonText } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form-control";
 import { MaskedTextInput } from "react-native-mask-text";
-import { Input, InputIcon } from "@/components/ui/input";
 import { Controller, useForm } from 'react-hook-form';
+import { addCarEntry } from "@/services/PlateService";
 import { Heading } from '@/components/ui/heading';
-import { DollarSign } from 'lucide-react-native';
 import { Header } from "@/components/app/header";
 import { Center } from '@/components/ui/center';
 import { VStack } from '@/components/ui/vstack';
@@ -20,16 +20,26 @@ export const RegisterEntryTime = ({ navigation }) => {
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      id: userId,
-      parkingCost: ""
+      userId: userId,
+      plate: "",
+      date: "",
+      hours: ""
     }
   });
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = async (data) => {
+  const onSubmit = async ({ hours, date, ...data }) => {
     try {
-      await addParkingCost(data);
+      const [day, month, year] = date.split("/");
+      const [hour, minute] = hours.split(":");
+      const newDate = new Date(year, month, day, hour, minute);
+      const parsedData = {
+        date: newDate,
+        ...data
+      }
+
+      await addCarEntry(parsedData);
       navigation.goBack();
     } catch (error) {
       console.log(error);
@@ -55,18 +65,43 @@ export const RegisterEntryTime = ({ navigation }) => {
             <VStack space="xl">
 
               <VStack space="xs">
-                <Text className={`text-typography-500 ${errors.parkingCost ? "text-red-500" : ""}`}>Custo de estacionamento por minuto*</Text>
+                <Text className={`text-typography-500 ${errors.plate ? "text-red-500" : ""}`}>Placa do carro*</Text>
                 <Controller
                   control={control}
-                  name="parkingCost"
+                  name="plate"
+                  rules={{
+                    required: "É obrigatório inserir a placa do carro"
+                  }}
                   render={({ field: { onChange, value } }) => (
-                    <Input variant="rounded" size="xl" className={`text-center ${errors.parkingCost ? "border-2" : ""}`} isInvalid={errors.parkingCost}>
-                      <InputIcon as={DollarSign} className="m-3 -mr-1" color={errors.parkingCost ? "red" : "currentColor"} />
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.plate ? "border-2" : ""}`} isInvalid={errors.plate}>
+                      <InputIcon as={CarFront} className="m-3 -mr-1" color={errors.plate ? "red" : "currentColor"} />
+                      <InputField
+                        placeholder="ABC1234"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    </Input>
+                  )}
+                />
+                {errors.plate && <Text className="text-red-500 text-sm ml-5">{errors.plate.message}</Text>}
+              </VStack>
+
+              <VStack space="xs">
+                <Text className={`text-typography-500 ${errors.date ? "text-red-500" : ""}`}>Data*</Text>
+                <Controller
+                  control={control}
+                  name="date"
+                  rules={{
+                    minLength: { value: 10, message: "Data inadequada" }
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.date ? "border-2" : ""}`} isInvalid={errors.date}>
+                      <InputIcon as={Calendar} className="m-3 -mr-1" color={errors.date ? "red" : "currentColor"} />
                       <MaskedTextInput
                         style={{ flex: 1, paddingHorizontal: 14 }}
-                        mask="R$9,99"
+                        mask="99/99/9999"
                         type="text"
-                        placeholder="R$0,00"
+                        placeholder="01/01/2000"
                         keyboardType="numeric"
                         value={value}
                         onChangeText={onChange}
@@ -74,7 +109,30 @@ export const RegisterEntryTime = ({ navigation }) => {
                     </Input>
                   )}
                 />
-                {errors.parkingCost && <Text className="text-red-500 text-sm ml-5">{errors.parkingCost.message}</Text>}
+                {errors.date && <Text className="text-red-500 text-sm ml-5">{errors.date.message}</Text>}
+              </VStack>
+
+              <VStack space="xs">
+                <Text className={`text-typography-500 ${errors.hours ? "text-red-500" : ""}`}>Horário*</Text>
+                <Controller
+                  control={control}
+                  name="hours"
+                  render={({ field: { onChange, value } }) => (
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.hours ? "border-2" : ""}`} isInvalid={errors.hours}>
+                      <InputIcon as={Clock} className="m-3 -mr-1" color={errors.hours ? "red" : "currentColor"} />
+                      <MaskedTextInput
+                        style={{ flex: 1, paddingHorizontal: 14 }}
+                        mask="99:99"
+                        type="text"
+                        placeholder="23:59"
+                        keyboardType="numeric"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    </Input>
+                  )}
+                />
+                {errors.hours && <Text className="text-red-500 text-sm ml-5">{errors.hours.message}</Text>}
               </VStack>
 
               {errorMessage && <Text className="text-red-500 text-md">{errorMessage}</Text>}

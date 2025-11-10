@@ -1,11 +1,11 @@
-import { doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { doc, getDoc, addDoc, setDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 const carEntryCollection = collection(db, "CarEntryDate");
 
-export const getParkingCost = async (id) => {
+export const getCarEntry = async (id) => {
   try {
-    const documentRef = doc(parkingCostCollection, id);
+    const documentRef = doc(carEntryCollection, id);
     const documentSnap = await getDoc(documentRef);
 
     if (documentSnap.exists()) {
@@ -14,21 +14,16 @@ export const getParkingCost = async (id) => {
       throw new Error("Documento não encontrado");
     }
   } catch (error) {
-    console.error("Erro ao receber o custo do estacionamento:", error);
+    console.error("Erro ao retornar entrada de estacionamento:", error);
     throw error;
   }
 };
 
-export const addParkingCost = async (data) => {
+export const addCarEntry = async (data) => {
   try {
-    if (!data.id) {
-      throw new Error("ID é obrigatório para adicionar custo de estacionamento");
-    }
-
-    const documentRef = doc(parkingCostCollection, data.id);
-    await setDoc(documentRef, data);
+    await addDoc(carEntryCollection, data);
   } catch (error) {
-    console.error("Erro ao adicionar custo de estacionamento:", error);
+    console.error("Erro ao adicionar nova entrada de estacionamento:", error);
     throw error;
   }
 };

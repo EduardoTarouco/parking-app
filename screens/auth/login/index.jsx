@@ -54,66 +54,66 @@ export const Login = ({ navigation }) => {
                 <Controller
                   control={control}
                   name="email"
-                  rules={{required: "O email é obrigatório"}}
+                  rules={{ required: "O email é obrigatório" }}
                   render={({ field: { onChange, value } }) => (
-                  <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
-                    <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
-                    <InputField
-                      placeholder="fulano@gmail.com"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                  </Input>
-                )}
+                    <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
+                      <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
+                      <InputField
+                        placeholder="Fulano@gmail.com"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    </Input>
+                  )}
                 />
                 {errors.email && <Text className="text-red-500 text-sm ml-5">{errors.email.message}</Text>}
               </VStack>
 
               <VStack space="xs">
                 <Text className={`text-typography-500 ${errors.senha ? "text-red-500" : ""}`}>Senha*</Text>
-                <Controller 
+                <Controller
                   control={control}
                   name="senha"
-                  rules={{required: "A senha é obrigatória"}}
+                  rules={{ required: "A senha é obrigatória" }}
                   render={({ field: { onChange, value } }) => (
-                  <Input variant="rounded" size="xl" className={`text-center ${errors.senha ? "border-2" : ""}`} isInvalid={errors.senha}>
-                    <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.senha ? "red" : "currentColor"} />
-                    <InputField 
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Senha"
-                      value={value}
-                      onChangeText={onChange}
-                    />
-                    <InputSlot className="pr-3" onPress={() => {setShowPassword(!showPassword)}}>
-                      <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
-                    </InputSlot>
-                  </Input>
-                )}
+                    <Input variant="rounded" size="xl" className={`text-center ${errors.senha ? "border-2" : ""}`} isInvalid={errors.senha}>
+                      <InputIcon as={LockIcon} className="m-3 -mr-1" color={errors.senha ? "red" : "currentColor"} />
+                      <InputField
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Senha"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                      <InputSlot className="pr-3" onPress={() => { setShowPassword(!showPassword) }}>
+                        <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
+                      </InputSlot>
+                    </Input>
+                  )}
                 />
                 {errors.senha && <Text className="text-red-500 text-sm ml-5">{errors.senha.message}</Text>}
               </VStack>
 
               {errorMessage && <Text className="text-red-500 text-md">{errorMessage}</Text>}
 
-              <Button 
-                action={"primary"} 
-                variant={"solid"} 
-                size={"lg"} 
+              <Button
+                action={"primary"}
+                variant={"solid"}
+                size={"lg"}
                 onPress={handleSubmit(onSubmit)}
               >
                 <ButtonText>Enviar</ButtonText>
               </Button>
-                
+
               <Button
-                className="self-end -mt-5" 
+                className="self-end -mt-5"
                 variant={"link"}
                 size={"sm"}
-                onPress={() => {console.log(navigation.push("reset-password"))}}
+                onPress={() => { console.log(navigation.push("reset-password")) }}
               >
                 <ButtonText className="text-blue-500 underline">Esqueci a senha</ButtonText>
               </Button>
             </VStack>
-          </FormControl>    
+          </FormControl>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
