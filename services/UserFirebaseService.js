@@ -1,8 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut } from "firebase/auth";
-import { getFirestore, collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
-import { auth } from '@/firebaseConfig';
-
-const db = getFirestore();
+import { collection, getDocs, deleteDoc, doc, addDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '@/firebaseConfig';
 
 export const signUp = async ({email, senha}) => {
   try {

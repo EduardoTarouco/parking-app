@@ -20,7 +20,7 @@ export const ResetPassword = ({ navigation }) => {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
-  
+
   const onSubmit = async (data) => {
     try {
       await resetPassword(data);
@@ -43,27 +43,27 @@ export const ResetPassword = ({ navigation }) => {
             <Controller
               control={control}
               name="email"
-              rules={{required: "O email é obrigatório"}}
+              rules={{ required: "O email é obrigatório" }}
               render={({ field: { onChange, value } }) => (
-              <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
-                <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
-                <InputField
-                  placeholder="fulano@gmail.com"
-                  value={value}
-                  onChangeText={onChange}
-                />
-              </Input>
-            )}
+                <Input variant="rounded" size="xl" className={`min-w-[250px] text-center ${errors.email ? "border-2" : ""}`} isInvalid={errors.email}>
+                  <InputIcon as={MailIcon} className="m-3 -mr-1" color={errors.email ? "red" : "currentColor"} />
+                  <InputField
+                    placeholder="Fulano@gmail.com"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                </Input>
+              )}
             />
             {errors.email && <Text className="text-red-500 text-sm ml-5">{errors.email.message}</Text>}
           </VStack>
 
           {errorMessage && <Text className="text-red-500 text-md">{errorMessage}</Text>}
 
-          <Button 
-            action={"primary"} 
-            variant={"solid"} 
-            size={"lg"} 
+          <Button
+            action={"primary"}
+            variant={"solid"}
+            size={"lg"}
             onPress={handleSubmit(onSubmit)}
           >
             <ButtonText>Enviar</ButtonText>
