@@ -24,6 +24,12 @@ export const Home = ({ navigation }) => {
           >
             <ButtonText>Registrar entrada de carro</ButtonText>
           </Button>
+          
+          <Button variant="solid" size="md" action="primary"
+            onPress={() => { navigation.navigate('departure-time') }}
+          >
+            <ButtonText>Registrar saída de carro</ButtonText>
+          </Button>
 
           <Button variant="solid" size="md" action="negative"
             onPress={() => { signOutUser() }}

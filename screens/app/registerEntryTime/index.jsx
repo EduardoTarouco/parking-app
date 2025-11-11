@@ -11,6 +11,7 @@ import { Heading } from '@/components/ui/heading';
 import { Header } from "@/components/app/header";
 import { Center } from '@/components/ui/center';
 import { VStack } from '@/components/ui/vstack';
+import { Timestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
 
@@ -31,11 +32,11 @@ export const RegisterEntryTime = ({ navigation }) => {
 
   const onSubmit = async ({ hours, date, ...data }) => {
     try {
-      const [day, month, year] = date.split("/");
-      const [hour, minute] = hours.split(":");
-      const newDate = new Date(year, month, day, hour, minute);
+      const [day, month, year] = date.split("/").map(Number);
+      const [hour, minute] = hours.split(":").map(Number);
+      const newDate = new Date(year, month-1, day, hour, minute);
       const parsedData = {
-        date: newDate,
+        date: Timestamp.fromDate(newDate),
         ...data
       }
 
@@ -58,7 +59,7 @@ export const RegisterEntryTime = ({ navigation }) => {
         <Header />
         <View className="bg-yellow-200 flex-1 flex justify-center items-center gap-2 p-5">
           <VStack className="flex justify-center items-center m-2">
-            <Heading size={"4xl"} className="text-center">Registrar custo de estacionamento</Heading>
+            <Heading size={"4xl"} className="text-center">Registrar entrada</Heading>
           </VStack>
 
           <FormControl className="bg-gray-50 p-5 border rounded-lg border-outline-300 w-[95%]">
