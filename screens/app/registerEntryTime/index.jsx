@@ -93,7 +93,9 @@ export const RegisterEntryTime = ({ navigation }) => {
                   control={control}
                   name="date"
                   rules={{
-                    minLength: { value: 10, message: "Data inadequada" }
+                    minLength: { value: 10, message: "Data inadequada" },
+                    maxLength: { value: 10, message: "Data inadequada" },
+                    required: { value: true, message: "Data é obrigatória" }
                   }}
                   render={({ field: { onChange, value } }) => (
                     <Input variant="rounded" size="xl" className={`text-center ${errors.date ? "border-2" : ""}`} isInvalid={errors.date}>
@@ -118,6 +120,10 @@ export const RegisterEntryTime = ({ navigation }) => {
                 <Controller
                   control={control}
                   name="hours"
+                  rules={{
+                    required: {value: true, message: "Horário é obrigatório"},
+                    minLength: { value: 5, message: "Horário inadequado" }
+                  }}
                   render={({ field: { onChange, value } }) => (
                     <Input variant="rounded" size="xl" className={`text-center ${errors.hours ? "border-2" : ""}`} isInvalid={errors.hours}>
                       <InputIcon as={Clock} className="m-3 -mr-1" color={errors.hours ? "red" : "currentColor"} />

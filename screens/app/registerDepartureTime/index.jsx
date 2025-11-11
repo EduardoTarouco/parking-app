@@ -10,6 +10,7 @@ import { Input, InputIcon } from "@/components/ui/input";
 import { Controller, useForm } from 'react-hook-form';
 import { Clock, Calendar } from 'lucide-react-native';
 import { Modal, Portal } from 'react-native-paper';
+import { Heading } from '@/components/ui/heading';
 import { Header } from "@/components/app/header";
 import { VStack } from '@/components/ui/vstack';
 import { Timestamp } from "firebase/firestore";
@@ -26,8 +27,6 @@ export const RegisterDepartureTime = ({ navigation }) => {
       hours: ""
     }
   });
-
-  const [cost, setCost] = useState(null);
 
   const [visible, setVisible] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -76,6 +75,7 @@ export const RegisterDepartureTime = ({ navigation }) => {
         ...data
       }
 
+      setCost(totalCost.toFixed(2).replace(".", ","));
       addCarDeparture(parsedData);
       setErrorMessage(null);
       hideModal();
@@ -124,7 +124,9 @@ export const RegisterDepartureTime = ({ navigation }) => {
                     control={control}
                     name="date"
                     rules={{
-                      minLength: { value: 10, message: "Data inadequada" }
+                      minLength: { value: 10, message: "Data inadequada" },
+                      maxLength: { value: 10, message: "Data inadequada" },
+                      required: { value: true, message: "Data é obrigatória" }
                     }}
                     render={({ field: { onChange, value } }) => (
                       <Input variant="rounded" size="xl" className={`text-center ${errors.date ? "border-2" : ""}`} isInvalid={errors.date}>
@@ -149,6 +151,10 @@ export const RegisterDepartureTime = ({ navigation }) => {
                   <Controller
                     control={control}
                     name="hours"
+                    rules={{
+                      required: {value: true, message: "Horário é obrigatório"},
+                      minLength: { value: 5, message: "Horário inadequado" }
+                    }}
                     render={({ field: { onChange, value } }) => (
                       <Input variant="rounded" size="xl" className={`text-center ${errors.hours ? "border-2" : ""}`} isInvalid={errors.hours}>
                         <InputIcon as={Clock} className="m-3 -mr-1" color={errors.hours ? "red" : "currentColor"} />
@@ -180,6 +186,8 @@ export const RegisterDepartureTime = ({ navigation }) => {
               </VStack>
             </Modal>
           </Portal>
+
+          <Heading size={"4xl"} className="text-center">Registrar saída</Heading>
           <FlatList
             className="w-full p-2 gap-2"
             data={entries}
