@@ -21,7 +21,7 @@ export const RegisterDepartureTime = ({ navigation }) => {
           console.log(error);
         }
       })();
-    return () => {};
+      return () => { };
     }, [])
   );
 
@@ -35,9 +35,22 @@ export const RegisterDepartureTime = ({ navigation }) => {
       >
         <Header />
         <View className="bg-yellow-200 flex-1 flex justify-center items-center gap-2 p-5">
-          <FlatList 
-            ListEmptyComponent={<Text>Ainda não foi registrada nenhuma placa no dia de hoje</Text>}
+          <FlatList
+            className="w-full p-2"
             data={entries}
+            ListEmptyComponent={
+              <Text className="text-center">
+                Ainda não foi registrada nenhuma placa no dia de hoje
+              </Text>}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View
+                className="bg-white rounded-3xl border-gray-900 border-2 px-4 py-3"
+              >
+                <Text className="text-sm text-gray-600 text-center">Placa</Text>
+                <Text className="text-3xl font-bold text-center">{item.plate}</Text>
+              </View>
+            )}
           />
         </View>
       </KeyboardAvoidingView>
