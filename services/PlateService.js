@@ -3,6 +3,31 @@ import { query, where, Timestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 const carEntryCollection = collection(db, "CarEntryDate");
+const carDepartureCollection = collection(db, "CarDepartureDate");
+
+export const getAllDeparturesFromToday = async () => {
+  try {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const q = query(
+      carDepartureCollection,
+      where("entryDate", ">=", Timestamp.fromDate(startOfDay)),
+      where("entryDate", "<=", Timestamp.fromDate(endOfDay))
+    );
+
+    const querySnapshot = await getDocs(q);
+    const entries = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    return entries;
+  } catch (error) {
+    console.error("Erro ao retornar todas as entradas de estacionamento:", error);
+    throw error;
+  }
+};
 
 export const getAllEntriesFromToday = async () => {
   try {
@@ -40,6 +65,15 @@ export const getCarEntry = async (id) => {
     }
   } catch (error) {
     console.error("Erro ao retornar entrada de estacionamento:", error);
+    throw error;
+  }
+};
+
+export const addCarDeparture = async (data) => {
+  try {
+    await addDoc(carDepartureCollection, data);
+  } catch (error) {
+    console.error("Erro ao adicionar nova saída do estacionamento:", error);
     throw error;
   }
 };

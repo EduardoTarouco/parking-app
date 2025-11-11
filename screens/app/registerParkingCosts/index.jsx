@@ -64,9 +64,9 @@ export const RegisterParkingCosts = ({ navigation }) => {
                       <InputIcon as={DollarSign} className="m-3 -mr-1" color={errors.parkingCost ? "red" : "currentColor"} />
                       <MaskedTextInput
                         style={{ flex: 1, paddingHorizontal: 14 }}
-                        mask="R$9,99"
+                        mask="R$99,99"
                         type="text"
-                        placeholder="R$0,00"
+                        placeholder="R$00,00"
                         keyboardType="numeric"
                         value={value}
                         onChangeText={onChange}

@@ -2,6 +2,7 @@ import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
+import { PaperProvider } from "react-native-paper";
 import { useState, useEffect } from 'react';
 import { auth } from '@/firebaseConfig';
 import "@/global.css";
@@ -32,9 +33,11 @@ export default function App() {
 
   return (
     <GluestackUIProvider>
-      <NavigationContainer>
-        {user ? <AppStack /> : <AuthStack />}
-      </NavigationContainer>
+      <PaperProvider>
+        <NavigationContainer>
+          {user ? <AppStack /> : <AuthStack />}
+        </NavigationContainer>
+      </PaperProvider>
     </GluestackUIProvider>
   );
 }
